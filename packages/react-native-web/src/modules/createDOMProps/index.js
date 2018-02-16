@@ -77,6 +77,8 @@ const createDOMProps = (component, props, styleResolver) => {
     accessibilityComponentType,
     accessibilityRole,
     accessibilityTraits,
+    focusable,
+    onPress,
     /* eslint-enable */
     ...domProps
   } = props;
@@ -125,6 +127,16 @@ const createDOMProps = (component, props, styleResolver) => {
   }
   if (testID && testID.constructor === String) {
     domProps['data-testid'] = testID;
+  }
+  if (focusable || onPress || tabIndex) {
+    domProps['data-focusable'] = true;
+    domProps.role = 'button';
+    if (onPress) {
+      domProps.onClick = onPress;
+    }
+    if (!domProps.tabIndex) {
+      domProps.tabIndex = '0';
+    }
   }
 
   return domProps;
